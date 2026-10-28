@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>QIK: Science Card Game, Game &amp; Visual Design Case Study</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070d24;--c:#0f1a3f;--c2:#15245a;--ln:#ffffff1f;--t:#f4f6ff;--m:#9aa6d1;--y:#ffd23f;--p:#ff5fa2;--b:#3d8bff;--g:#2fd18b;--v:#a779ff;--r:#ff4d5e;--k:var(--y);
+box-sizing:border-box}
+*,*:before,*:after{box-sizing:inherit}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--t);font:300 17px/1.6 Outfit,system-ui,sans-serif;overflow-x:hidden;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+img{max-width:100%;display:block}button{font:inherit;color:inherit;cursor:pointer}
+h1,h2,h3{font-family:Fredoka,Outfit,sans-serif;margin:0;letter-spacing:-.01em;line-height:1.02}
+h1{font-size:clamp(3rem,9vw,7.5rem);font-weight:700}
+h2{font-size:clamp(2rem,5vw,4rem);font-weight:600;margin-bottom:.35em}
+h3{font-weight:500;font-size:1.3rem}
+section{position:relative;padding:clamp(70px,13vh,140px) 6vw;border-top:1px solid var(--ln);isolation:isolate}
+section:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(50% 40% at 90% 0,#3d8bff22,transparent 70%)}
+section:nth-of-type(even):before{background:radial-gradient(50% 40% at 6% 100%,#ff5fa21c,transparent 70%)}
+.in-w{max-width:1180px;margin:0 auto}
+.eyebrow{font:500 .78rem/1 ui-monospace,Menlo,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--y);margin:0 0 18px;display:block}
+.sub{color:var(--m);max-width:58ch;font-size:1.12rem}
+.back{position:fixed;top:max(14px,env(safe-area-inset-top));left:14px;z-index:20;display:inline-flex;gap:8px;align-items:center;padding:9px 16px;border:1px solid var(--ln);border-radius:99px;background:#070d24cc;backdrop-filter:blur(10px);color:var(--t);text-decoration:none;font-size:.9rem;transition:.2s}
+.back:hover,.back:focus-visible{border-color:var(--y);color:var(--y)}
+:focus-visible{outline:2px solid var(--y);outline-offset:3px}
+.rv{opacity:0;transform:translateY(28px);transition:opacity .9s,transform .9s}.rv.in{opacity:1;transform:none}
+.chip{display:inline-block;margin:4px 6px 4px 0;padding:6px 14px;border:1px solid var(--k);color:var(--k);border-radius:99px;background:color-mix(in srgb,var(--k) 12%,transparent);font-size:.9rem}
+/* hero */
+#hero{min-height:100vh;display:grid;align-content:center;border:0;overflow:hidden;text-align:center}
+#hero .logo{width:clamp(180px,26vw,320px);margin:0 auto 10px;animation:float 5s ease-in-out infinite}
+#hero .tagline{font:600 clamp(1.1rem,2.6vw,1.8rem)/1.2 Fredoka,sans-serif;color:var(--y);margin:10px 0 28px}
+#hero .meta{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:28px}
+#hero .fan{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+#hero .fan img{position:absolute;width:clamp(90px,13vw,190px);border-radius:12px;box-shadow:0 20px 40px -12px #000a;opacity:.5;animation:float 7s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-12px) rotate(var(--r2,0deg))}}
+/* facts */
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:44px}
+.fact{background:var(--c);border:1px solid var(--ln);border-radius:20px;padding:22px}
+.fact b{display:block;font:700 2.6rem/1 Fredoka,sans-serif;color:var(--k)}
+.fact span{color:var(--m);font-size:.95rem}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,70px);align-items:center;margin-top:34px}
+.panel{background:var(--c);border:1px solid var(--ln);border-radius:24px;padding:clamp(22px,3vw,36px)}
+.panel p{margin:.6em 0 0;color:#cdd5f5}
+/* topics */
+.tabs{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 8px}
+.tabs button{display:flex;align-items:center;gap:10px;background:var(--c);border:1px solid var(--ln);border-radius:99px;padding:10px 20px;transition:.2s}
+.tabs button i{width:12px;height:12px;border-radius:50%;background:var(--k)}
+.tabs button:hover{border-color:var(--k)}
+.tabs button[aria-selected=true]{border-color:var(--k);background:color-mix(in srgb,var(--k) 18%,var(--c));box-shadow:0 0 28px -8px var(--k)}
+.stage{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr);gap:30px;align-items:center;margin-top:26px}
+.stage .txt h3{color:var(--k);font-size:1.8rem;margin-bottom:8px}
+.stage .txt p{color:#cdd5f5;margin:.4em 0}
+.hand{display:flex;gap:0;justify-content:center;min-height:300px;align-items:center;padding:20px 0}
+.hand button{all:unset;cursor:pointer;flex:none;width:clamp(86px,13vw,158px);margin-left:calc(clamp(86px,13vw,158px)*-.32);border-radius:14px;box-shadow:0 14px 30px -10px #000c;transform:rotate(var(--rot));transition:transform .45s cubic-bezier(.34,1.4,.5,1),box-shadow .3s;position:relative}
+.hand button:first-child{margin-left:0}
+.hand button img{width:100%;border-radius:14px}
+.hand button:hover,.hand button:focus-visible{transform:translateY(-22px) rotate(0) scale(1.1);z-index:9;box-shadow:0 26px 40px -10px #000}
+.hand button:focus-visible{outline:2px solid var(--k);outline-offset:4px}
+.hand.swap button{animation:deal .6s both cubic-bezier(.2,.8,.2,1);animation-delay:calc(var(--i)*70ms)}
+@keyframes deal{from{opacity:0;transform:translateY(40px) rotate(8deg)}}
+/* types */
+.types{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:34px}
+.type{text-align:left;background:var(--c);border:1px solid var(--ln);border-radius:22px;padding:22px;transition:.25s;position:relative}
+.type .code{font:700 2.2rem/1 Fredoka,sans-serif;color:var(--k)}
+.type h3{margin:8px 0 6px}
+.type p{margin:0;color:var(--m);font-size:.95rem}
+.type:hover,.type[aria-pressed=true]{border-color:var(--k);transform:translateY(-4px);box-shadow:0 18px 40px -16px var(--k)}
+.rule-box{margin-top:18px;padding:18px 22px;border:1px dashed var(--y);border-radius:18px;color:#ffeaa0;display:flex;gap:14px;align-items:center}
+.rule-box b{font-family:Fredoka;font-size:1.3rem;white-space:nowrap}
+/* turn */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px}
+.step{background:var(--c);border:1px solid var(--ln);border-radius:24px;padding:26px;text-align:left;transition:.3s;position:relative;overflow:hidden}
+.step .n{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--k);color:#07102e;font:700 1.4rem Fredoka,sans-serif;margin-bottom:14px}
+.step h3{color:var(--k)}
+.step p{color:var(--m);margin:.5em 0 0;font-size:.98rem}
+.step.on,.step:hover{border-color:var(--k);transform:translateY(-5px)}
+.step.on:after{content:"";position:absolute;left:0;bottom:0;height:4px;background:var(--k);animation:bar 2.2s linear forwards}
+@keyframes bar{from{width:0}to{width:100%}}
+.build{margin-top:34px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.grp{display:flex;gap:6px;padding:14px;border:1px dashed var(--ln);border-radius:18px;align-items:center}
+.grp small{color:var(--m);margin-right:6px;font-size:.8rem}
+.mini{width:34px;height:48px;border-radius:7px;background:var(--k);opacity:.2;transform:scale(.7);transition:.5s cubic-bezier(.34,1.5,.5,1)}
+.build.in .mini{opacity:1;transform:none;transition-delay:calc(var(--i)*90ms)}
+.build .plus{font:600 1.6rem Fredoka;color:var(--m)}
+/* challenge */
+.flow{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+.flow .panel h3{color:var(--y)}
+.flow ul{margin:10px 0 0;padding-left:1.1em;color:#cdd5f5}
+.flow li{margin:.3em 0}
+/* rulebook */
+.book{margin-top:30px}
+.book .page{background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 30px 60px -20px #000;max-width:340px;margin:0 auto}
+.book .page img{width:100%}
+.book .bar{display:flex;gap:12px;align-items:center;justify-content:center;margin-top:18px}
+.book .bar button{width:44px;height:44px;border-radius:50%;border:1px solid var(--ln);background:var(--c);font-size:1.2rem;transition:.2s}
+.book .bar button:hover{border-color:var(--y);color:var(--y)}
+.book .dots{display:flex;gap:7px}.book .dots i{width:9px;height:9px;border-radius:50%;background:#ffffff33;transition:.3s}.book .dots i.on{background:var(--y);transform:scale(1.4)}
+/* pack */
+.pack{background:var(--c);border:1px solid var(--ln);border-radius:26px;overflow:hidden;cursor:zoom-in;padding:0;display:block;width:100%}
+.pack img{width:100%;transition:transform .8s}
+.pack:hover img{transform:scale(1.03)}
+.pair{display:grid;grid-template-columns:1fr 1.6fr;gap:22px;margin-top:26px;align-items:center}
+.cardback{width:min(240px,60%);margin:0 auto;border-radius:18px;box-shadow:0 24px 50px -16px #000;transition:transform .6s;transform:rotate(-4deg)}
+.cardback:hover{transform:rotate(3deg) scale(1.04)}
+/* decisions */
+.dec{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:30px}
+.dec .panel h3{color:var(--k)}
+.cols{display:flex;gap:6px;margin:14px 0 0}.cols i{height:10px;flex:1;border-radius:6px;background:var(--k)}
+dialog{background:#000;border:1px solid var(--ln);border-radius:16px;padding:0;max-width:94vw;color:var(--t)}dialog::backdrop{background:#000d}
+dialog img{max-height:86vh;margin:auto}dialog form{position:absolute;top:8px;right:8px}dialog button{border:1px solid var(--ln);background:#000a;border-radius:99px;padding:6px 14px}
+footer{padding:60px 6vw 90px;border-top:1px solid var(--ln);text-align:center}
+footer a{color:var(--y);text-decoration:none;font-family:Fredoka;font-size:1.3rem}
+footer a:hover{text-decoration:underline}
+@media(max-width:900px){.facts,.types{grid-template-columns:1fr 1fr}.two,.stage,.pair,.dec{grid-template-columns:1fr}.steps,.flow{grid-template-columns:1fr}.hand{min-height:220px}.back span{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}.mini{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<a class="back" href="../index.html" aria-label="Back to portfolio">← <span>Portfolio</span></a>
+
+<section id="hero">
+  <div class="fan" aria-hidden="true">
+    <img src="../assets/qik/elec-m.webp" alt="" style="left:4%;top:12%;--r2:-8deg;transform:rotate(-12deg)">
+    <img src="../assets/qik/light-m.webp" alt="" style="left:15%;bottom:8%;--r2:6deg;transform:rotate(7deg);animation-delay:-2s">
+    <img src="../assets/qik/photo-m.webp" alt="" style="right:5%;top:10%;--r2:8deg;transform:rotate(11deg);animation-delay:-1s">
+    <img src="../assets/qik/acid-m.webp" alt="" style="right:14%;bottom:7%;--r2:-6deg;transform:rotate(-8deg);animation-delay:-3s">
+  </div>
+  <div class="in-w">
+    <span class="eyebrow">Case study · Game design · Visual design · Packaging</span>
+    <img class="logo" src="../assets/qik/logo.webp" alt="QIK logo">
+    <h1 class="sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">QIK</h1>
+    <p class="tagline">Small cards, big thinking!</p>
+    <p class="sub" style="margin:0 auto">A science card game that turns revising concepts into something students collect, connect and talk about.</p>
+    <div class="meta">
+      <span class="chip" style="--k:var(--y)">2–4 players</span>
+      <span class="chip" style="--k:var(--p)">52 cards</span>
+      <span class="chip" style="--k:var(--b)">4 science topics</span>
+      <span class="chip" style="--k:var(--g)">Educational game</span>
+    </div>
+  </div>
+</section>
+
+<section id="overview">
+  <div class="in-w">
+    <span class="eyebrow rv">01 · Overview</span>
+    <h2 class="rv">See it. Understand it. Play it.</h2>
+    <p class="sub rv">QIK is a colourful educational card game that helps students connect science concepts by collecting, challenging and recalling. Instead of reading a topic once, players build it, card by card, and then have to explain it to someone else.</p>
+    <div class="facts rv">
+      <div class="fact" style="--k:var(--y)"><b>52</b><span>cards in the deck</span></div>
+      <div class="fact" style="--k:var(--p)"><b>4</b><span>science topics</span></div>
+      <div class="fact" style="--k:var(--b)"><b>4</b><span>card types with a clear job</span></div>
+      <div class="fact" style="--k:var(--g)"><b>10</b><span>cards to collect and win</span></div>
+    </div>
+    <div class="two rv">
+      <div class="panel" style="--k:var(--r)">
+        <h3 style="color:var(--r)">The problem</h3>
+        <p>Science chapters are full of linked ideas: causes, steps, diagrams, vocabulary. Students often meet them as separate facts, so revision becomes passive reading and it is hard to see how one idea leads to the next.</p>
+      </div>
+      <div class="panel">
+        <h3 style="color:var(--g)">The opportunity</h3>
+        <p>A game already asks players to match, group and explain. If each card carries one piece of a topic, then winning a round means connecting the pieces, which is exactly what revision should do.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="topics">
+  <div class="in-w">
+    <span class="eyebrow rv">02 · The deck</span>
+    <h2 class="rv">Four topics, four colours</h2>
+    <p class="sub rv">Each topic has its own colour world, so a player can tell at a glance which cards belong together. Pick a topic and hover over the cards.</p>
+    <div class="tabs" role="tablist" aria-label="Science topics" id="tabs"></div>
+    <div class="stage">
+      <div class="txt" id="tTxt"></div>
+      <div class="hand" id="hand" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<section id="types">
+  <div class="in-w">
+    <span class="eyebrow rv">03 · Card system</span>
+    <h2 class="rv">Four card types, one bigger picture</h2>
+    <p class="sub rv">Every card has a job. A small code in the corner (P, C, D or M) tells the player what kind of card they are holding and how it can be used when giving clues.</p>
+    <div class="types rv" id="typeGrid"></div>
+    <div class="rule-box rv" id="typeRule" style="--k:var(--y)"><b>How to use it</b><span id="typeTxt"></span></div>
+  </div>
+</section>
+
+<section id="turn">
+  <div class="in-w">
+    <span class="eyebrow rv">04 · Game flow</span>
+    <h2 class="rv">Your turn: pick, arrange, discard</h2>
+    <p class="sub rv">The loop is short on purpose. Three actions, then pass the turn. Each player starts with 10 cards and aims for a hand of related groups.</p>
+    <div class="steps" id="steps"></div>
+    <div class="build" id="build" aria-label="Winning hand: 4 plus 3 plus 3 cards">
+      <div class="grp" style="--k:var(--y)"><small>Group 1</small><i class="mini" style="--i:0"></i><i class="mini" style="--i:1"></i><i class="mini" style="--i:2"></i><i class="mini" style="--i:3"></i></div>
+      <span class="plus">+</span>
+      <div class="grp" style="--k:var(--p)"><small>Group 2</small><i class="mini" style="--i:4"></i><i class="mini" style="--i:5"></i><i class="mini" style="--i:6"></i></div>
+      <span class="plus">+</span>
+      <div class="grp" style="--k:var(--b)"><small>Group 3</small><i class="mini" style="--i:7"></i><i class="mini" style="--i:8"></i><i class="mini" style="--i:9"></i></div>
+      <span class="plus">=</span><b style="font:700 2rem Fredoka;color:var(--g)">10 cards</b>
+    </div>
+    <p class="sub rv" style="margin-top:14px">Groups only count when the cards have a meaningful connection. The Master card is the wild card, but it can only stand in for cards from its own topic.</p>
+  </div>
+</section>
+
+<section id="challenge">
+  <div class="in-w">
+    <span class="eyebrow rv">05 · Learning moment</span>
+    <h2 class="rv">Challenge, clues, recall</h2>
+    <p class="sub rv">Collecting is only half the game. When a player completes 10 cards they call “Challenge!” and the real learning begins, because they have to prove they understand the topic.</p>
+    <div class="flow rv">
+      <div class="panel" style="--k:var(--y)"><h3>1 · Challenge</h3><ul><li>Complete your 10 cards and keep them hidden</li><li>Call out “Challenge!”</li><li>Another player accepts</li></ul></div>
+      <div class="panel"><h3>2 · Give clues</h3><ul><li>Process and Clue cards stay hidden</li><li>Use their steps and keywords as hints</li><li>A Diagram card may be shown</li><li><b>The rule:</b> give clues, never the answer</li></ul></div>
+      <div class="panel"><h3>3 · Recall &amp; win</h3><ul><li>Correct answer earns a bonus turn</li><li>Wrong answer means no bonus turn</li><li>Win with 10 cards arranged 4 + 3 + 3 and the challenges completed</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section id="book">
+  <div class="in-w">
+    <span class="eyebrow rv">06 · Rulebook</span>
+    <h2 class="rv">A guide that reads like a game</h2>
+    <p class="sub rv">The instruction book follows the same bright style as the cards, with one idea per panel: the game, card types, your turn, challenge, recall and win. Flip through it.</p>
+    <div class="book rv">
+      <div class="page"><img id="bookImg" src="../assets/qik/rule-1.webp" alt="Rulebook panel 1 of 6: Game style guide"></div>
+      <div class="bar"><button id="bPrev" aria-label="Previous panel">←</button><div class="dots" id="bDots"></div><button id="bNext" aria-label="Next panel">→</button></div>
+    </div>
+  </div>
+</section>
+
+<section id="pack">
+  <div class="in-w">
+    <span class="eyebrow rv">07 · Brand &amp; packaging</span>
+    <h2 class="rv">Small cards, big thinking</h2>
+    <p class="sub rv">The box carries the promise of the game: a deep navy base for contrast, a playful QIK mark with a bulb and a flask, two friendly characters holding cards, and a “how to play” panel on the side so the rules are visible before the box is opened.</p>
+    <button class="pack rv" id="packBtn" aria-label="Open packaging dieline larger"><img src="../assets/qik/packaging.webp" alt="QIK box packaging dieline with logo, characters and how to play panel"></button>
+    <div class="pair rv">
+      <img class="cardback" src="../assets/qik/card-back.webp" alt="QIK card back design">
+      <div>
+        <h3 style="color:var(--y)">One card back for every topic</h3>
+        <p class="sub" style="margin-top:8px">A single shared back keeps the deck anonymous in a player’s hand, so opponents cannot guess a topic from the colour while it is face down.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="decisions">
+  <div class="in-w">
+    <span class="eyebrow rv">08 · Design decisions</span>
+    <h2 class="rv">Why it works</h2>
+    <div class="dec rv">
+      <div class="panel" style="--k:var(--y)"><h3>Colour as a sorting tool</h3><p>Topic colours let players build groups by sight first and by meaning second. Yellow is reserved for Master cards so the wild card is always easy to spot.</p><div class="cols"><i style="--k:var(--r)"></i><i style="--k:var(--b)"></i><i style="--k:var(--v)"></i><i style="--k:var(--g)"></i><i style="--k:var(--y)"></i></div></div>
+      <div class="panel" style="--k:var(--b)"><h3>A code on every card</h3><p>The corner codes (P1, C2, D3, M) repeat top and bottom, so a card can be read from a fanned hand without opening it fully.</p></div>
+      <div class="panel" style="--k:var(--p)"><h3>Hints, not answers</h3><p>Clue cards list three guiding questions and every card ends with a one-line hint. The design supports the rule of the game: help someone think, don’t tell them the answer.</p></div>
+      <div class="panel" style="--k:var(--g)"><h3>Rules you can see</h3><p>The how-to-play panel on the box and the six-panel guide use the same icons and steps, so learning the game and playing it feel like the same experience.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p style="color:var(--m);margin:0 0 12px">Play · Explore · Learn · Grow</p>
+  <a href="../index.html">← Back to portfolio</a>
+</footer>
+
+<dialog id="dlg"><form method="dialog"><button aria-label="Close">Close ✕</button></form><img id="dImg" alt=""></dialog>
+
+<script>
+const $=s=>document.querySelector(s);
+const A='../assets/qik/';
+const TOPICS=[
+ {n:'Electricity & Current',k:'#ff4d5e',d:'Current, resistance, the heating effect and circuit components, from batteries to ammeters and voltmeters.',c:['elec-m','elec-p','elec-c','elec-d1','elec-d2'],a:['Master: Electricity & Current','Process: Current flow','Clue: Battery','Diagram: Ohm’s law','Diagram: Series circuit']},
+ {n:'Light & Optics',k:'#3d8bff',d:'Reflection, refraction and dispersion, with glass blocks, a bent pencil, a raised coin and a prism to make them visible.',c:['light-m','light-p','light-c','light-d1','light-d2'],a:['Master: Light & Optics','Process: Light enters a new medium','Clue: Refraction','Diagram: Glass block','Diagram: Prism refraction']},
+ {n:'Acid & Base React',k:'#a779ff',d:'Acids, bases and salts, neutralisation, the pH scale and indicators, shown through reactions and colour change.',c:['acid-m','acid-p','acid-c','acid-d1','acid-d2'],a:['Master: Acid and base react','Process: Acid and base react','Clue: Acid','Diagram: pH scale','Diagram: Neutralisation']},
+ {n:'Photosynthesis',k:'#2fd18b',d:'How plants make food: stomata, chlorophyll, glucose, leaf structure and the photosynthesis equation.',c:['photo-m','photo-p','photo-c','photo-d1','photo-d2'],a:['Master: Photosynthesis','Process: Water enters guard cells','Clue: Stomata','Diagram: Gas exchange','Diagram: Chloroplast']}
+];
+const tabs=$('#tabs'),hand=$('#hand'),tTxt=$('#tTxt'),dlg=$('#dlg'),dImg=$('#dImg');
+function openImg(src,alt){dImg.src=src;dImg.alt=alt;dlg.showModal()}
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+function showTopic(i){
+  const t=TOPICS[i];
+  [...tabs.children].forEach((b,j)=>b.setAttribute('aria-selected',j===i));
+  document.querySelector('.stage').style.setProperty('--k',t.k);
+  tTxt.innerHTML='<h3>'+t.n+'</h3><p>'+t.d+'</p><p style="color:var(--m);font-size:.92rem">Tap any card to enlarge it.</p>';
+  hand.classList.remove('swap');void hand.offsetWidth;hand.classList.add('swap');
+  hand.innerHTML='';
+  t.c.forEach((f,j)=>{
+    const b=document.createElement('button');b.type='button';b.style.setProperty('--i',j);b.style.setProperty('--rot',((j-2)*5)+'deg');b.setAttribute('aria-label','Enlarge card, '+t.a[j]);
+    b.innerHTML='<img src="'+A+f+'.webp" alt="'+t.a[j]+'" loading="lazy">';
+    b.onclick=()=>openImg(A+f+'.webp',t.a[j]);
+    hand.appendChild(b);
+  });
+}
+TOPICS.forEach((t,i)=>{
+  const b=document.createElement('button');b.type='button';b.setAttribute('role','tab');b.style.setProperty('--k',t.k);
+  b.innerHTML='<i></i>'+t.n;b.onclick=()=>showTopic(i);tabs.appendChild(b);
+});
+showTopic(0);
+
+const TYPES=[
+ {c:'P',n:'Process',d:'Shows steps or stages',k:'var(--b)',u:'Keep it hidden and explain the process using clues, one stage at a time.'},
+ {c:'C',n:'Clue',d:'Contains keywords and hints',k:'var(--v)',u:'Keep it hidden and use its keywords as hints for the other player.'},
+ {c:'D',n:'Diagram',d:'Shows important visuals',k:'var(--g)',u:'You may show the diagram while giving clues; it does the pointing for you.'},
+ {c:'M',n:'Master',d:'Represents the complete topic',k:'var(--y)',u:'A wild card, but only with cards from its own topic. Keep it hidden and don’t reveal the answer.'}
+];
+const tg=$('#typeGrid');
+TYPES.forEach((t,i)=>{
+  const b=document.createElement('button');b.type='button';b.className='type';b.style.setProperty('--k',t.k);b.setAttribute('aria-pressed',i===0);
+  b.innerHTML='<span class="code">'+t.c+'</span><h3>'+t.n+'</h3><p>'+t.d+'</p>';
+  b.onclick=()=>{[...tg.children].forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');$('#typeRule').style.setProperty('--k',t.k);$('#typeRule').style.borderColor=t.k;$('#typeRule').style.color=t.k;$('#typeTxt').textContent=t.u};
+  tg.appendChild(b);
+});
+$('#typeTxt').textContent=TYPES[0].u;$('#typeRule').style.borderColor=TYPES[0].k;$('#typeRule').style.color=TYPES[0].k;
+
+const STEPS=[['Pick','Take one card from the draw pile or the discard pile.','var(--p)'],['Arrange','Match your cards into related groups, building towards 4 + 3 + 3.','var(--b)'],['Discard','Place one unwanted card on the discard pile, then pass the turn.','var(--y)']];
+const st=$('#steps');let cur=0;
+STEPS.forEach((s,i)=>{const d=document.createElement('button');d.type='button';d.className='step rv';d.style.setProperty('--k',s[2]);d.innerHTML='<span class="n">'+(i+1)+'</span><h3>'+s[0]+'</h3><p>'+s[1]+'</p>';d.onclick=()=>{cur=i;mark(true)};st.appendChild(d)});
+let timer;function mark(manual){[...st.children].forEach((e,i)=>{e.classList.remove('on');if(i===cur){void e.offsetWidth;e.classList.add('on')}});clearTimeout(timer);timer=setTimeout(()=>{cur=(cur+1)%3;mark()},2300)}
+let started=false;
+
+const bookN=6,bImg=$('#bookImg'),bd=$('#bDots');let bi=0;
+const bAlt=['Game style guide','The game','Card types','Your turn','Challenge','Recall and win'];
+for(let i=0;i<bookN;i++)bd.appendChild(document.createElement('i'));
+function book(n){bi=(n+bookN)%bookN;bImg.src=A+'rule-'+(bi+1)+'.webp';bImg.alt='Rulebook panel '+(bi+1)+' of 6: '+bAlt[bi];[...bd.children].forEach((e,i)=>e.classList.toggle('on',i===bi))}
+$('#bPrev').onclick=()=>book(bi-1);$('#bNext').onclick=()=>book(bi+1);book(0);
+bImg.style.cursor='zoom-in';bImg.onclick=()=>openImg(bImg.src,bImg.alt);
+$('#packBtn').onclick=()=>openImg(A+'packaging.webp','QIK box packaging dieline');
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;e.target.classList.add('in');if(e.target.id==='steps'&&!started){started=true;mark()}}),{threshold:.2});
+document.querySelectorAll('.rv,#build,#steps').forEach(e=>io.observe(e));
+</script>
+</body>
+</html>
